@@ -70,7 +70,11 @@ h3 {
   font-family: var(--font-heading);
   color: var(--secondary-color);
   font-weight: 600;
-  font-size: 0.85rem;
+
+
+  font-size: var(--large-font);
+  border: none;
+  background-color: var(--light-bg);
 }
 
 /* Add separator between tabs */
@@ -83,6 +87,7 @@ h3 {
 /* Active tab styling */
 .deactivated {
   background-color: var(--secondary-color);
+  color: white;
 }
 
 .deactivated h3 {
@@ -91,6 +96,7 @@ h3 {
 
 .deactivated:hover {
   background-color: var(--success-bg);
+  color: var(--secondary-color);
   transition: color 0.3s ease;
 }
 

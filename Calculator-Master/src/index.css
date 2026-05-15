@@ -151,19 +151,6 @@ h3 {
   border-radius: 8px 0 0 0;
 }
 
-/* Calculator Display Area */
-#calculator-display {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--light-bg);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-color);
-  margin: 0;
-  max-width: 450px;
-  min-width: 450px;
-}
-
 .display-container {
   margin: 0;
   padding: 0;

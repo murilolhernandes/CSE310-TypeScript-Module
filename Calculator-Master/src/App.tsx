@@ -17,13 +17,13 @@ function App() {
           <div id="calculator-display">
             <div className='options'>
               {/* <div className='reg-calc'> */}
-                <button className="reg-calc" onClick={() => setActiveMode('regular')}>Calculator</button>
+                <button className={`reg-calc ${activeMode !== 'regular' ? 'deactivated' : ''}`} onClick={() => setActiveMode('regular')}>Calculator</button>
               {/* </div> */}
               {/* <div className='cooking'> */}
-                <button className="cooking" onClick={() => setActiveMode('cooking')}>Cooking</button>
+                <button className={`cooking ${activeMode !== 'cooking' ? 'deactivated': ''}`} onClick={() => setActiveMode('cooking')}>Cooking</button>
               {/* </div> */}
               {/* <div className='conversion'> */}
-                <button className="conversion" onClick={() => setActiveMode('conversion')}>Conversion</button>
+                <button className={`conversion ${activeMode !== 'conversion' ? 'deactivated' : ''}`} onClick={() => setActiveMode('conversion')}>Conversion</button>
               {/* </div> */}
             </div>
 
