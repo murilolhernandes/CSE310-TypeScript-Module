@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import RegularCalculator from './components/regularCalculator'
-import './App.css'
+import { useState } from 'react';
+import RegularCalculator from './components/regularCalculator';
+import CookingCalculator from './components/cooking';
+import './App.css';
 
 function App() {
   // Act as the "Manager" by tracking the active calculator mode
@@ -29,18 +30,11 @@ function App() {
 
             {/* Conditionally render the selected calculator */}
             {activeMode === 'regular' && <RegularCalculator />}
-            {activeMode === 'cooking' && <div>Cooking Calculator Component (Coming Soon)</div>}
+            {activeMode === 'cooking' && <CookingCalculator />}
             {activeMode === 'conversion' && <div>Conversion Calculator Component (Coming Soon)</div>}
           </div>
         </div>
       </div>
-
-      {/* Conditionally render the selected calculator */}
-      {/* <div id="calculator">
-        {activeMode === 'regular' && <RegularCalculator />}
-        {activeMode === 'cooking' && <div>Cooking Calculator Component (Coming Soon)</div>}
-        {activeMode === 'conversion' && <div>Conversion Calculator Component (Coming Soon)</div>}
-      </div> */}
     </>
   )
 }

@@ -291,9 +291,9 @@ button:hover {
   transform: scale(0.95);
 }
 
-.zero {
+/* .zero {
   grid-column-start: 2;
-}
+} */
 
 .clear {
   position: relative;

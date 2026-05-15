@@ -268,10 +268,6 @@ h3 {
   transform: scale(0.95);
 }
 
-.zero {
-  grid-column-start: 2;
-}
-
 .clear {
   position: relative;
 }

@@ -110,6 +110,34 @@ export default function RegularCalculator() {
     }));
   }, []);
 
+  // Recursive Function
+  const calculateFactorial = (n: number): number => {
+    // Base cases
+    if (n < 0) return NaN; // Factorials for negative numbers don't exist this way
+    if (n === 0 || n === 1) return 1;
+
+    // Recursive call: n * (n - 1)!
+    return n * calculateFactorial(n - 1);
+  };
+
+  const handleFactorial = () => {
+    setState((prev) => {
+      const currentNum = parseFloat(prev.currentValue);
+      if (isNaN(currentNum)) return prev;
+
+      // Make sure we only do factorials of whole numbers to avoid infinite loops
+      const intNum = Math.floor(currentNum);
+
+      const result = calculateFactorial(intNum);
+
+      return {
+        ...prev,
+        currentValue: result.toString(),
+        overwriteL: true
+      };
+    });
+  };
+
   // Keyboard Support ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -131,7 +159,7 @@ export default function RegularCalculator() {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [appendNumber, chooseOperation, compute, clear]);
 
   // If an operation exists, display "Previous Operato Current". Otherwise just "Current".
@@ -149,7 +177,6 @@ export default function RegularCalculator() {
           placeholder='Enter a number'
           readOnly 
         />
-      {/* </div> */}
 
       <div className='keypad-container'>
         <div id='keypad'>
@@ -184,6 +211,7 @@ export default function RegularCalculator() {
           <div className='fifth-line'>
             <button className='digits rounded-borders zero' onClick={() => appendNumber('0')}>&#48;</button>
             <button className='digits rounded-borders dot' onClick={() => appendNumber('.')}>&#8901;</button>
+            <button className='rounded-borders factorial' onClick={handleFactorial}>x&#33;</button>
             <button className='rounded-borders equals' onClick={compute}>&#61;</button>
           </div>
         </div>
