@@ -342,8 +342,23 @@ button:hover {
   gap: 1rem;
 }
 
+.autocomplete-item:hover {
+  background-color: var(--success-bg);
+  color: var(--secondary-color);
+}
+
+.autocomplete-item.autocomplete-active {
+  background-color: var(--success-bg) !important;
+  color: var(--secondary-color) !important;
+  font-weight: bold !important;
+}
+
 .autocomplete-item {
-  background-color: #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: var(--text-primary);
+  background-color: white;
 }
 
 .autocomplete-active {

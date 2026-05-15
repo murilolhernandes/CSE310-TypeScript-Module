@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import RegularCalculator from './components/regularCalculator';
-import CookingCalculator from './components/cooking';
+import CookingCalculator from './components/cookingCalculator';
 import './App.css';
 
 function App() {
   // Act as the "Manager" by tracking the active calculator mode
-  const [activeMode, setActiveMode] = useState<'regular' | 'cooking' | 'conversion' | null>(null);
-
+  const [activeMode, setActiveMode] = useState<'regular' | 'cooking' | 'conversion'>('regular');
+  
   return (
     <>
       <div className="welcome">
