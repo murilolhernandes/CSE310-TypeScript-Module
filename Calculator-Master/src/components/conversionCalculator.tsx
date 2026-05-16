@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { KeyboardEvent } from 'react';
-// @ts-expect-error - Ignoring missing type declarations for migrated JS files
 import ConversionCore from '../utils/ConversionCore';
 
 // Extract the long list of options into a reusable sub-component
@@ -247,8 +246,8 @@ export default function ConversionCalculator() {
           <div className="example-grid">
             <div className="example-item">
               <p>
-                Example: Value: <strong>2,</strong> From Unit:
-                <strong>Kilograms,</strong> To Unit: <strong>Grams</strong>
+                Example: Value: <strong>2,</strong> From Unit: <strong>Kilograms,
+                  </strong> To Unit: <strong>Grams</strong>
               </p>
               <p>Result: <strong>2 kg = 2,000.00 g</strong></p>
             </div>

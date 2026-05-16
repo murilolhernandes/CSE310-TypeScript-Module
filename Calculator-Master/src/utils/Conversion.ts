@@ -2,15 +2,15 @@ export default class Conversion {
   #apiKey;
   #apiBaseUrl = "https://measurement-units-converter.p.rapidapi.com/api/v1/market/conversions/convert";
 
-  constructor(apiKey) {
+  constructor(apiKey: string) {
     if (!apiKey) throw new Error("API key is required.");
     this.#apiKey = apiKey;
   }
 
-  async convert(value, inputUnit, outputUnit) {
+  async convert(value: string | number, inputUnit: string, outputUnit: string): Promise<number> {
     try {
       const url = new URL(`${this.#apiBaseUrl}`);
-      url.searchParams.append("value", value);
+      url.searchParams.append("value", value.toString());
       url.searchParams.append("input_unit", inputUnit);
       url.searchParams.append("output_unit", outputUnit);
 
@@ -33,8 +33,8 @@ export default class Conversion {
       }
       // console.log(`API Response: ${JSON.stringify(data)}`);
       return data.output.value;
-    } catch (error) {
-      throw new Error(`API request failed: ${error.message}`);
+    } catch (error: any) {
+      throw new Error(`API request failed: ${error.message}`, { cause: error });
     }
   }
 }

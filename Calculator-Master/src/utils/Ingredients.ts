@@ -556,7 +556,7 @@ export const VALID_INGREDIENTS = [
 export const VALID_INGREDIENTS_SET = new Set(VALID_INGREDIENTS);
 
 // Common ingredient mappings
-export const INGREDIENT_MAPPINGS = {
+export const INGREDIENT_MAPPINGS: Record<string, string> = {
   // Flours
   "all purpose flour": "flour",
   "ap flour": "flour",
@@ -644,7 +644,7 @@ export const INGREDIENT_MAPPINGS = {
   "cashew": "cashews",
 };
 
-export function findBestIngredientMatch(input) {
+export function findBestIngredientMatch(input: string): string {
   const normalized = input.toLowerCase().trim();
   
   // 1. Check direct mappings first
@@ -668,7 +668,7 @@ export function findBestIngredientMatch(input) {
   return underscored;
 }
 
-export function findFuzzyMatches(input, maxResults = 5) {
+export function findFuzzyMatches(input: string, maxResults: number = 5): Array<{ingredient: string, score: number}> {
   const normalized = input.toLowerCase().trim();
   const results = [];
   
@@ -684,7 +684,7 @@ export function findFuzzyMatches(input, maxResults = 5) {
     .slice(0, maxResults);
 }
 
-function calculateSimilarity(str1, str2) {
+function calculateSimilarity(str1: string, str2: string): number {
   const s1 = str1.replace(/_/g, ' ');
   const s2 = str2.replace(/_/g, ' ');
   
@@ -701,7 +701,7 @@ function calculateSimilarity(str1, str2) {
   return 1 - (distance / maxLen);
 }
 
-function levenshteinDistance(str1, str2) {
+function levenshteinDistance(str1: string, str2: string): number {
   const matrix = [];
   
   for (let i = 0; i <= str2.length; i++) {
@@ -729,7 +729,7 @@ function levenshteinDistance(str1, str2) {
   return matrix[str2.length][str1.length];
 }
 
-export function getIngredientSuggestions(partial) {
+export function getIngredientSuggestions(partial: string): Array<{display: string, value: string}> {
   const normalized = partial.toLowerCase().trim();
   const suggestions = [];
   

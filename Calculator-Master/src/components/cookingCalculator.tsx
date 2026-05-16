@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-// @ts-expect-error - Ignoring missing type declarations for migrated JS files
 import CookingCore from '../utils/CookingCore';
-// @ts-expect-error - Ignoring missing type declarations for migrated JS files
 import { getIngredientSuggestions } from '../utils/Ingredients';
 
 export default function CookingCalculator() {

@@ -3,17 +3,24 @@ import {
   findBestIngredientMatch, 
   getIngredientSuggestions,
   VALID_INGREDIENTS_SET 
-} from "./Ingredients.js";
+} from "./Ingredients";
+
+interface ParsedInput {
+  value: string;
+  unit: string;
+  ingredient: string;
+  targetUnit: string | null;
+}
 
 export default class CookingCore {
-  #converter;
-  #cache = new Map();
+  #converter: Cooking;
+  #cache: Map<string, any> = new Map();
 
-  constructor(apiKey) {
+  constructor(apiKey: string) {
     this.#converter = new Cooking(apiKey);
   }
 
-  parseConvertInput(input) {
+  parseConvertInput(input: string): ParsedInput {
     // More flexible regex to handle multi-word ingredients
     const match = input.match(/^(\d+\.?\d*)\s+(\w+)\s+(.+?)(?:\s+to\s+(\w+))?$/i);
     if (!match) {
@@ -27,11 +34,11 @@ export default class CookingCore {
     };
   }
 
-  normalizeIngredient(ingredient) {
+  normalizeIngredient(ingredient: string): string {
     return findBestIngredientMatch(ingredient);
   }
 
-  validateIngredient(normalizedIngredient) {
+  validateIngredient(normalizedIngredient: string): void {
     if (!VALID_INGREDIENTS_SET.has(normalizedIngredient)) {
       // Get suggestions for user
       const suggestions = getIngredientSuggestions(normalizedIngredient.replace(/_/g, " "))
@@ -46,7 +53,7 @@ export default class CookingCore {
     }
   }
 
-  async convertUnit(input) {
+  async convertUnit(input: string): Promise<string> {
     const { value, unit, ingredient, targetUnit } = this.parseConvertInput(input);
     const normalizedUnit = this.normalizeUnit(unit);
     const normalizedIngredient = this.normalizeIngredient(ingredient);
@@ -62,7 +69,7 @@ export default class CookingCore {
       return this.formatResult(value, normalizedUnit, normalizedIngredient, result, targetUnit);
     }
 
-    let conversions;
+    let conversions: any;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         conversions = await this.#converter.convert(value, normalizedUnit, normalizedIngredient);
@@ -73,7 +80,7 @@ export default class CookingCore {
       }
     }
 
-    if (Object.keys(conversions).length === 0 || conversions.error) {
+    if (!conversions || Object.keys(conversions).length === 0 || conversions.error) {
       throw new Error("No valid conversions returned from API");
     }
 
@@ -99,8 +106,8 @@ export default class CookingCore {
     return this.formatResult(value, normalizedUnit, normalizedIngredient, result, targetUnit);
   }
 
-  normalizeUnit(unit) {
-    const unitMap = {
+  normalizeUnit(unit: string): string {
+    const unitMap: Record<string, string> = {
       // Singular to plural mappings
       "cup": "cups",
       "teaspoon": "teaspoons",
@@ -130,15 +137,15 @@ export default class CookingCore {
     return unitMap[normalized] || normalized;
   }
 
-  formatResult(value, unit, ingredient, result, targetUnit) {
+  formatResult(value: string, unit: string, ingredient: string, result: any, targetUnit: string | null): string {
     const readableIngredient = ingredient.replace(/_/g, " ");
     
     if (typeof result === "object" && result !== null) {
       // Format multiple conversions
       const conversions = Object.entries(result)
-        .map(([unit, value]) => {
+        .map(([unit, val]) => {
           const readableUnit = unit.replace(/_/g, " ");
-          return `${parseFloat(value).toFixed(2)} ${readableUnit}`;
+          return `${parseFloat(String(val)).toFixed(2)} ${readableUnit}`;
         })
         .join(", ");
       
@@ -151,17 +158,17 @@ export default class CookingCore {
   }
 
   // New method to get ingredient suggestions for autocomplete
-  getSuggestions(partial) {
+  getSuggestions(partial: string) {
     return getIngredientSuggestions(partial);
   }
 
   // Clear cache method
-  clearCache() {
+  clearCache(): void {
     this.#cache.clear();
   }
 
   // Get cache statistics
-  getCacheStats() {
+  getCacheStats(): { size: number; entries: string[] } {
     return {
       size: this.#cache.size,
       entries: Array.from(this.#cache.keys())

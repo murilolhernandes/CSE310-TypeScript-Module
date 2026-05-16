@@ -1,18 +1,18 @@
 import Conversion from "./Conversion.js";
 
 export default class ConversionCore {
-  #converter;
+  #converter: Conversion;
 
-  constructor(apiKey) {
+  constructor(apiKey: string) {
     this.#converter = new Conversion(apiKey);
   }
 
-  async convertUnit(value, fromUnit, toUnit) {
+  async convertUnit(value: string | number, fromUnit: string, toUnit: string): Promise<number> {
     if (!value || !fromUnit || !toUnit) {
       throw new Error(`Please enter a value and valid units ("10 meters to feet")`);
     }
 
-    const numValue = parseFloat(value);
+    const numValue = parseFloat(value.toString());
     if (numValue <= 0) {
       throw new Error("Negative values are not supported");
     }
@@ -24,12 +24,12 @@ export default class ConversionCore {
     return result;
   }
 
-  parseInput(input) {
+  parseInput(input: string): [number, string, string] | never[] {
     const match = input.match(/(\d+\.?\d*)\s+([a-zA-Z]+)\s+to\s+([a-zA-Z]+)/i);
     return match ? [parseFloat(match[1]), match[2].toLowerCase(), match[3].toLowerCase()] : [];
   }
 
-  isSupportedConversion(pair) {
+  isSupportedConversion(pair: string): boolean {
     const supportedPairs = [
       "kg-g", "g-kg", "lb-kg", "kg-lb", "oz-g", "g-oz", "km-m", "m-km", "mi-km", "km-mi",
       "l-ml", "ml-l", "gal-l", "l-gal", "ft-m", "m-ft", "in-cm", "cm-in", "F-C", "C-F",
