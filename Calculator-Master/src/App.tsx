@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import RegularCalculator from './components/regularCalculator';
 import CookingCalculator from './components/cookingCalculator';
+import ConversionCalculator from './components/conversionCalculator';
 import './App.css';
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
               {/* Conditionally render the selected calculator */}
               {activeMode === 'regular' && <RegularCalculator />}
               {activeMode === 'cooking' && <CookingCalculator />}
-              {activeMode === 'conversion' && <div>Conversion Calculator Component (Coming Soon)</div>}
+              {activeMode === 'conversion' && <ConversionCalculator />}
             </div>
           </div>
         </div>
