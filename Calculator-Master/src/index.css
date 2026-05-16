@@ -154,7 +154,7 @@ h3 {
 .display-container {
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color) !important; 
   min-height: 693px;
 }
 

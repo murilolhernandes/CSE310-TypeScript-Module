@@ -74,7 +74,17 @@ export default function CookingCalculator() {
       const core = new CookingCore(apiKey);
 
       const converted = await core.convertUnit(input);
-      setResult(converted);
+
+      const fractionResult = converted
+        .replace(/\b(\d+\.\d+)\b/g, (match: string) => {
+          return decimalToFraction(parseFloat(match));
+        })
+        // Check for 1, or pure fractions (like 3/4), and singularize the unit
+        .replace(/(?<!\d\s)\b(1|\d+\/\d+)\s+cups\b/g, '$1 cup')
+        .replace(/(?<!\d\s)\b(1|\d+\/\d+)\s+tablespoons\b/g, '$1 tablespoon')
+        .replace(/(?<!\d\s)\b(1|\d+\/\d+)\s+teaspoons\b/g, '$1 teaspoon');
+
+      setResult(fractionResult);
 
       setIsLoading(false);
     } catch (err: any) {
@@ -108,6 +118,40 @@ export default function CookingCalculator() {
         handleConvert();
       }
     }
+  };
+
+  const getGCD = (a: number, b: number): number => {
+    if (b === 0) return a;
+    return getGCD(b, a % b);
+  };
+
+  const decimalToFraction = (decimal: number): string => {
+    // Handle whole numbers (e.g., 2.00 -> "2")
+    if (decimal % 1 === 0) return decimal.toString();
+
+    const wholePart = Math.floor(decimal);
+    const fractionalPart = decimal - wholePart;
+
+    // Cooking tolerance for thirds (0.33 and 0.66)
+    if (Math.abs(fractionalPart - 0.33) < 0.02) return wholePart > 0 ? `${wholePart} 1/3` : "1/3";
+    if (Math.abs(fractionalPart - 0.66) < 0.02) return wholePart > 0 ? `${wholePart} 2/3` : "2/3";
+
+    // Convert decimal to fraction over 100 (e.g., 0.75 -> 75/100)
+    const precision = 100;
+    let numerator = Math.round(fractionalPart * precision);
+    let denominator = precision;
+
+    // Use our RECURSIVE function to find how much we can simplify it!
+    const gcd = getGCD(numerator, denominator);
+    
+    numerator = numerator / gcd;
+    denominator = denominator / gcd;
+
+    // If the denominator gets too weird for cooking (like 17/25), just return the decimal
+    if (denominator > 8) return decimal.toFixed(2);
+
+    const fractionStr = `${numerator}/${denominator}`;
+    return wholePart > 0 ? `${wholePart} ${fractionStr}` : fractionStr;
   };
 
   return (

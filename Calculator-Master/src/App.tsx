@@ -28,10 +28,12 @@ function App() {
               {/* </div> */}
             </div>
 
-            {/* Conditionally render the selected calculator */}
-            {activeMode === 'regular' && <RegularCalculator />}
-            {activeMode === 'cooking' && <CookingCalculator />}
-            {activeMode === 'conversion' && <div>Conversion Calculator Component (Coming Soon)</div>}
+            <div id="display-container">
+              {/* Conditionally render the selected calculator */}
+              {activeMode === 'regular' && <RegularCalculator />}
+              {activeMode === 'cooking' && <CookingCalculator />}
+              {activeMode === 'conversion' && <div>Conversion Calculator Component (Coming Soon)</div>}
+            </div>
           </div>
         </div>
       </div>

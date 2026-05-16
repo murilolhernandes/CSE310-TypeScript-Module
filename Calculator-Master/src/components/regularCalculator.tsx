@@ -172,6 +172,8 @@ export default function RegularCalculator() {
       <h2>Calculator</h2>
         {/* Main input display */}
         <input 
+          type="text"
+          id="input-box"
           className='input-box'
           value={displayValue}
           placeholder='Enter a number'
