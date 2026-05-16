@@ -3,10 +3,12 @@ import Conversion from "./Conversion.js";
 export default class ConversionCore {
   #converter: Conversion;
 
+  // Initializes the conversion core wrapper with the required API key.
   constructor(apiKey: string) {
     this.#converter = new Conversion(apiKey);
   }
 
+  // Validates the input and delegates the unit conversion request to the Conversion API.
   async convertUnit(value: string | number, fromUnit: string, toUnit: string): Promise<number> {
     if (!value || !fromUnit || !toUnit) {
       throw new Error(`Please enter a value and valid units ("10 meters to feet")`);
@@ -24,11 +26,13 @@ export default class ConversionCore {
     return result;
   }
 
+  // Extracts the numeric value, starting unit, and target unit from a natural language string.
   parseInput(input: string): [number, string, string] | never[] {
     const match = input.match(/(\d+\.?\d*)\s+([a-zA-Z]+)\s+to\s+([a-zA-Z]+)/i);
     return match ? [parseFloat(match[1]), match[2].toLowerCase(), match[3].toLowerCase()] : [];
   }
 
+  // Checks whether the specified unit conversion pair is supported by the API.
   isSupportedConversion(pair: string): boolean {
     const supportedPairs = [
       "kg-g", "g-kg", "lb-kg", "kg-lb", "oz-g", "g-oz", "km-m", "m-km", "mi-km", "km-mi",

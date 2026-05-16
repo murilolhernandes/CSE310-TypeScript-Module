@@ -2,11 +2,13 @@ export default class Conversion {
   #apiKey;
   #apiBaseUrl = "https://measurement-units-converter.p.rapidapi.com/api/v1/market/conversions/convert";
 
+  // Initializes the generic measurement API converter with the required API key.
   constructor(apiKey: string) {
     if (!apiKey) throw new Error("API key is required.");
     this.#apiKey = apiKey;
   }
 
+  // Fetches standard unit conversions (e.g., length, weight, temperature) from the measurement API.
   async convert(value: string | number, inputUnit: string, outputUnit: string): Promise<number> {
     try {
       const url = new URL(`${this.#apiBaseUrl}`);

@@ -644,6 +644,7 @@ export const INGREDIENT_MAPPINGS: Record<string, string> = {
   "cashew": "cashews",
 };
 
+// Normalizes user input and returns the best matching ingredient ID from the valid ingredients list.
 export function findBestIngredientMatch(input: string): string {
   const normalized = input.toLowerCase().trim();
   
@@ -668,6 +669,7 @@ export function findBestIngredientMatch(input: string): string {
   return underscored;
 }
 
+// Finds and returns a list of fuzzy-matched ingredients based on their similarity score to the input.
 export function findFuzzyMatches(input: string, maxResults: number = 5): Array<{ingredient: string, score: number}> {
   const normalized = input.toLowerCase().trim();
   const results = [];
@@ -684,6 +686,10 @@ export function findFuzzyMatches(input: string, maxResults: number = 5): Array<{
     .slice(0, maxResults);
 }
 
+// ALGORITHM:
+// Calculates a match score between the user's input and our database.
+// It uses a combination of direct substring inclusion and Levenshtein distance 
+// (checking how many edits it takes to turn one word into another) to handle typos.
 function calculateSimilarity(str1: string, str2: string): number {
   const s1 = str1.replace(/_/g, ' ');
   const s2 = str2.replace(/_/g, ' ');
@@ -701,6 +707,7 @@ function calculateSimilarity(str1: string, str2: string): number {
   return 1 - (distance / maxLen);
 }
 
+// Computes the minimum number of single-character edits required to change one string into the other.
 function levenshteinDistance(str1: string, str2: string): number {
   const matrix = [];
   
@@ -729,6 +736,7 @@ function levenshteinDistance(str1: string, str2: string): number {
   return matrix[str2.length][str1.length];
 }
 
+// Generates a list of autocomplete suggestions for ingredients based on a partial input string.
 export function getIngredientSuggestions(partial: string): Array<{display: string, value: string}> {
   const normalized = partial.toLowerCase().trim();
   const suggestions = [];

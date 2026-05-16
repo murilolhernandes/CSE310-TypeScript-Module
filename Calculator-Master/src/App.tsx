@@ -4,8 +4,12 @@ import CookingCalculator from './components/cookingCalculator';
 import ConversionCalculator from './components/conversionCalculator';
 import './App.css';
 
+// Main application entry point that routes the user between different calculator modes.
 function App() {
   // Act as the "Manager" by tracking the active calculator mode
+  // REACT STATE:
+  // Acts as the central router for the application. Tracks which calculator tab
+  // the user is currently viewing, defaulting to the 'regular' calculator on load.
   const [activeMode, setActiveMode] = useState<'regular' | 'cooking' | 'conversion'>('regular');
   
   return (

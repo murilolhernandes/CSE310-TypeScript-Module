@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CalculatorState, Operator } from '../types';
 
+// Main React component for the Standard Calculator tab handling arithmetic operations.
 export default function RegularCalculator() {
   // Utilizing the types defined in src/types.ts
   const [state, setState] = useState<CalculatorState>({
@@ -10,10 +11,12 @@ export default function RegularCalculator() {
     overwriteL: true // Flag to determine if typing should replace the current value
   });
 
+  // Resets the calculator to its initial state.
   const clear = useCallback(() => {
     setState({ currentValue: '', previousValue: '', operation: null, overwriteL: true });
   }, []);
 
+  // Appends a clicked number or decimal point to the current input value.
   const appendNumber = useCallback((number: string) => {
     setState((prev) => {
       // Prevent multiple decimals
@@ -28,6 +31,7 @@ export default function RegularCalculator() {
     });
   }, []);
 
+  // Sets the mathematical operator and handles chaining operations if values already exist.
   const chooseOperation = useCallback((op: Operator) => {
     setState((prev) => {
       // Don't allow an operator if there are no numbers at all
@@ -68,6 +72,7 @@ export default function RegularCalculator() {
     });
   }, []);
 
+  // Calculates the final result based on the previous value, current value, and selected operation.
   const compute = useCallback(() => {
     setState((prev) => {
       const prevNum = parseFloat(prev.previousValue);
@@ -96,6 +101,7 @@ export default function RegularCalculator() {
     });
   }, []);
 
+  // Toggles the current input value between positive and negative.
   const toggleSign = useCallback(() => {
     setState(prev => ({
       ...prev,
@@ -103,6 +109,7 @@ export default function RegularCalculator() {
     }));
   }, []);
 
+  // Converts the current input value to a percentage (divides by 100).
   const percent = useCallback(() => {
     setState(prev => ({
       ...prev,
@@ -120,6 +127,7 @@ export default function RegularCalculator() {
     return n * calculateFactorial(n - 1);
   };
 
+  // Computes the factorial of the current whole number input.
   const handleFactorial = () => {
     setState((prev) => {
       const currentNum = parseFloat(prev.currentValue);

@@ -2,11 +2,13 @@ export default class Cooking {
   #apiKey;
   #apiUrl = "https://food-unit-of-measurement-converter.p.rapidapi.com/convert";
 
+  // Initializes the Cooking API converter with the provided API key.
   constructor(apiKey: string) {
     if (!apiKey) throw new Error("API key is required.");
     this.#apiKey = apiKey;
   }
 
+  // Fetches conversion data from the Food Unit of Measurement API for a specific value, unit, and ingredient.
   async convert(value: string | number, unit: string, ingredient: string): Promise<any> {
     try {
       const url = new URL(this.#apiUrl);

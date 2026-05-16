@@ -1,5 +1,6 @@
 import '../index.css'
 
+// Simple header component displaying the application title.
 export default function Header() {
   return (
     <header>

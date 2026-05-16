@@ -5,37 +5,6 @@ import ConversionCore from '../utils/ConversionCore';
 // Extract the long list of options into a reusable sub-component
 const UnitOptions = () => (
   <>
-    {/* <optgroup label="Length">
-      <option value="meters">Meters</option>
-      <option value="kilometers">Kilometers</option>
-      <option value="centimeters">Centimeters</option>
-      <option value="millimeters">Millimeters</option>
-      <option value="inches">Inches</option>
-      <option value="feet">Feet</option>
-      <option value="yards">Yards</option>
-      <option value="miles">Miles</option>
-    </optgroup>
-    <optgroup label="Weight">
-      <option value="kilograms">Kilograms</option>
-      <option value="grams">Grams</option>
-      <option value="milligrams">Milligrams</option>
-      <option value="pounds">Pounds</option>
-      <option value="ounces">Ounces</option>
-    </optgroup>
-    <optgroup label="Volume">
-      <option value="liters">Liters</option>
-      <option value="milliliters">Milliliters</option>
-      <option value="gallons">Gallons</option>
-      <option value="quarts">Quarts</option>
-      <option value="pints">Pints</option>
-      <option value="cups">Cups</option>
-      <option value="fluid_ounces">Fluid Ounces</option>
-    </optgroup>
-    <optgroup label="Temperature">
-      <option value="celsius">Celsius</option>
-      <option value="fahrenheit">Fahrenheit</option>
-      <option value="kelvin">Kelvin</option>
-    </optgroup> */}
     <optgroup label="Weight">
       <option value="kg">Kilogram (kg)</option>
       <option value="g">Gram (g)</option>
@@ -92,6 +61,7 @@ const UnitOptions = () => (
   </>
 );
 
+// Main React component for the Unit Converter tab handling standard measurements.
 export default function ConversionCalculator() {
   const [value, setValue] = useState('');
   const [fromUnit, setFromUnit] = useState('m');
@@ -100,6 +70,7 @@ export default function ConversionCalculator() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Validates user input and calls the conversion API, formatting the final numeric result.
   const handleConvert = async () => {
     if (!value.trim() || isNaN(Number(value))) {
       setError("Please enter a valid number to convert.");
@@ -142,12 +113,17 @@ export default function ConversionCalculator() {
     }
   };
 
+  // UX FEATURE: 
+  // Instantly flips the "from" and "to" units using React State. 
+  // We explicitly clear the 'result' state here so the user knows they need to 
+  // click 'Convert' again to fetch the new reversed data.
   const handleSwap = () => {
     setFromUnit(toUnit);
     setToUnit(fromUnit);
     setResult(null);
   }
 
+  // Triggers the conversion calculation when the 'Enter' key is pressed inside the input field.
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleConvert();

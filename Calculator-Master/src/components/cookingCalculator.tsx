@@ -3,6 +3,7 @@ import type { ChangeEvent, KeyboardEvent } from 'react';
 import CookingCore from '../utils/CookingCore';
 import { getIngredientSuggestions } from '../utils/Ingredients';
 
+// Main React component for the Cooking Calculator tab handling culinary conversions and ingredient autocomplete.
 export default function CookingCalculator() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState<string | null>(null);
@@ -46,6 +47,7 @@ export default function CookingCalculator() {
     }
   };
 
+  // Replaces the partial ingredient with the selected suggestion in the input field.
   const selectSuggestion = (suggestion: string) => {
     const words = input.trimStart().split(/\s+/);
     // Reconstruct the input string with the correct ingredient
@@ -56,6 +58,7 @@ export default function CookingCalculator() {
     setSelectedIndex(-1);
   };
 
+  // Submits the natural language cooking measurement query to the API and formats the response.
   const handleConvert = async () => {
     if (!input.trim()) {
       setError('Please enter a measurement to convert.');
@@ -71,8 +74,13 @@ export default function CookingCalculator() {
       const apiKey = import.meta.env.VITE_API_KEY;
       const core = new CookingCore(apiKey);
 
+      // ASYNC REQUIREMENT: Await the response from the RapidAPI Cooking endpoint      
       const converted = await core.convertUnit(input);
 
+      // REGEX INTERCEPTOR:
+      // We parse the string returned by the API, find any raw decimals, and pass 
+      // them into our recursive decimalToFraction function. We then use Negative 
+      // Lookbehinds in Regex to ensure we properly pluralize the culinary units.
       const fractionResult = converted
         .replace(/\b(\d+\.\d+)\b/g, (match: string) => {
           return decimalToFraction(parseFloat(match));
@@ -91,6 +99,7 @@ export default function CookingCalculator() {
     }
   };
 
+  // Handles keyboard navigation and selection within the autocomplete dropdown.
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
       setSuggestions([]);
@@ -117,6 +126,13 @@ export default function CookingCalculator() {
       }
     }
   };
+
+  // ---------------------------------------------------------------------------
+  // RECURSION REQUIREMENT:
+  // This uses the Euclidean Algorithm to find the Greatest Common Divisor (GCD).
+  // It recursively calls itself until the remainder is 0, allowing us to mathematically
+  // simplify decimal numbers (like 0.75) into perfect culinary fractions (like 3/4).
+  // ---------------------------------------------------------------------------
 
   const getGCD = (a: number, b: number): number => {
     if (b === 0) return a;
